@@ -1,10 +1,11 @@
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class Main {
 
-    public static final Integer SAIR = 4;
+    public static final Integer SAIR = 5;
     public static void main(String[] args){
 
         ArrayList<Produto> todosOsProdutos = new ArrayList<>();
@@ -19,7 +20,8 @@ public class Main {
             System.out.println("1- Cadastrar Produto");
             System.out.println("2- Listar produtos");
             System.out.println("3- Deletar produto");
-            System.out.println("4- Sair");
+            System.out.println("4- Editar produto");
+            System.out.println("5- Sair");
             opcao = ler.nextInt();
             switch (opcao) {
                 case 1 -> {
@@ -28,10 +30,10 @@ public class Main {
                 }
                 case 2 -> listagemDeProdutos(todosOsProdutos);
                 case 3 -> deletarProduto(todosOsProdutos);
-                case 4 -> System.out.println("Obrigado por utilizar o SisPetro");
+                case 4 -> editarProduto(todosOsProdutos);
+                case 5 -> System.out.println("Obrigado por utilizar o SisPetro");
                 default -> System.out.println("Opção invalida");
             }
-
         }
     }
     public static void cadastroDeProdutos(Integer proxCodBarrasProduto, ArrayList<Produto> todosOsProdutos){
@@ -76,5 +78,27 @@ public class Main {
         System.out.println("Digite o código do produto que deseja deletar: ");
         Integer codigoADeletar = ler.nextInt();
         todosOsProdutos.removeIf( produto -> produto.getCodigo() == codigoADeletar);
+    }
+
+    public static void editarProduto(ArrayList<Produto> todosOsProdutos){
+        Scanner ler = new Scanner(System.in);
+        Optional<Produto> produtoASerEditado;
+        listagemDeProdutos(todosOsProdutos);
+        System.out.println("Digite o código do produto que deseja editar: ");
+        Integer codProdutoAEditar = ler.nextInt();
+        produtoASerEditado = todosOsProdutos.stream().filter(produto -> produto.getCodigo() == codProdutoAEditar).findFirst();
+
+        System.out.println("Digite a descrição do Produto: ");
+        produtoASerEditado.get().setDescricao(ler.next());
+
+        System.out.println("Digite o preço do produto: ");
+        String gambiarra = ler.next();
+        produtoASerEditado.get().setPreco(Double.parseDouble(gambiarra));
+
+        System.out.println("Digite a quantidade a ser cadastrada no estoque: ");
+        produtoASerEditado.get().setEstoque(ler.nextInt());
+
+
+
     }
 }

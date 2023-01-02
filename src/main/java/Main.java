@@ -45,7 +45,6 @@ public class Main {
         System.out.println("Digite a descrição do Produto: ");
         produto.setDescricao(ler.next());
 
-
         System.out.println("Digite o preço do produto: ");
         String gambiarra = ler.next();
         produto.setPreco(Double.parseDouble(gambiarra));
@@ -65,6 +64,7 @@ public class Main {
             System.out.println(todosOsProdutos.get(x).getEstoque()+ "\t");
         }*/
         for(Produto p : todosOsProdutos){
+            //Java esta iterando a lista
             System.out.print(p.getCodigo() + "\t");
             System.out.print(p.getDescricao()+ "\t");
             System.out.print(p.getPreco()+ "\t");

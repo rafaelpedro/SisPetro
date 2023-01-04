@@ -1,17 +1,18 @@
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Stream;
 
 public class Main {
 
-    public static final Integer SAIR = 5;
+    public static final Integer SAIR = 9;
     public static void main(String[] args){
 
         ArrayList<Produto> todosOsProdutos = new ArrayList<>();
+        ArrayList<Combustivel> todosOsCombustiveis = new ArrayList<>();
 
         Scanner ler = new Scanner(System.in);
         Integer proxCodBarrasProduto = 1;
+        Integer proxCodBarrasCombustivel = 1;
         Integer opcao = 1;
 
 
@@ -21,7 +22,12 @@ public class Main {
             System.out.println("2- Listar produtos");
             System.out.println("3- Deletar produto");
             System.out.println("4- Editar produto");
-            System.out.println("5- Sair");
+            System.out.println("5- Cadastrar Combustivel");
+            System.out.println("6- Deletar Combustivel");
+            System.out.println("7- Editar preço do Combustivel");
+            System.out.println("8- Editar estoque do Combustivel");
+
+            System.out.println("9- Sair");
             opcao = ler.nextInt();
             switch (opcao) {
                 case 1 -> {
@@ -31,7 +37,15 @@ public class Main {
                 case 2 -> listagemDeProdutos(todosOsProdutos);
                 case 3 -> deletarProduto(todosOsProdutos);
                 case 4 -> editarProduto(todosOsProdutos);
-                case 5 -> System.out.println("Obrigado por utilizar o SisPetro");
+                case 5 -> {
+                    cadastroDeCombustiveis(proxCodBarrasCombustivel, todosOsCombustiveis);
+                    proxCodBarrasCombustivel +=1;
+                }
+                // case 6 ->
+                // case 7 ->
+                // case 8 ->
+
+                case 9 -> System.out.println("Obrigado por utilizar o SisPetro");
                 default -> System.out.println("Opção invalida");
             }
         }
@@ -100,5 +114,35 @@ public class Main {
 
 
 
+    }
+
+    public static void cadastroDeCombustiveis(Integer proxCodBarrasCombustivel, ArrayList<Combustivel> todosOsCombustiveis){
+        Scanner ler = new Scanner(System.in);
+        System.out.println("Criação de novo Combustivel");
+        Combustivel combustivel = new Combustivel();
+        combustivel.setCodigo(proxCodBarrasCombustivel);
+
+        // Aqui tem que fazer algo para só poder selecionar os combustiveis setados
+        System.out.println("Segue os tipos de combustiveis validos para cadastro:");
+        Stream.of(TipoDeCombustivel.values()).forEach(System.out::println);
+        System.out.println("Digite o tipo de combustivel desejado:");
+        String tipoDigitado = ler.next();
+        TipoDeCombustivel gambiarra3 = TipoDeCombustivel.valueOf(tipoDigitado);
+        combustivel.setTipo(gambiarra3);
+
+        //TipoDeCombustivel[] todosOsTiposDeCombustiveis = TipoDeCombustivel.values();
+        //List<TipoDeCombustivel> listaDoTipoDeCombustivel = Arrays.asList(todosOsTiposDeCombustiveis);
+        //System.out.println(tipoDigitado + "existe na lista como:" + (listaDoTipoDeCombustivel.contains(tipoDigitado)));
+
+        System.out.println("Digite o preço do combustivel: ");
+        String gambiarra1 = ler.next();
+        combustivel.setPreco(Double.parseDouble(gambiarra1));
+
+        System.out.println("Digite a litragem a ser cadastrada no estoque: ");
+        String gambirra2 = ler.next();
+        combustivel.setLitragemEmEstoque(Double.parseDouble(gambirra2));
+        //combustivel.baixaLitragemEmEstoque(1);
+
+        todosOsCombustiveis.add(combustivel);
     }
 }

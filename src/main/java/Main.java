@@ -44,7 +44,7 @@ public class Main {
                 }
                 case 6 -> listagemDeCombustiveis(todosOsCombustiveis);
                 case 7 -> deletarCombustivel(todosOsCombustiveis);
-                case 8 ->
+                case 8 -> editarPrecoCombustivel(todosOsCombustiveis);
                 // case 9 ->
 
                 case 10 -> System.out.println("Obrigado por utilizar o SisPetro");
@@ -162,5 +162,20 @@ public class Main {
         todosOsCombustiveis.removeIf( combustivel -> combustivel.getCodigo() == codigoADeletar);
     }
 
-    public static void
+    public static void editarPrecoCombustivel(ArrayList<Combustivel> todosOsCombustiveis){
+        Scanner ler = new Scanner(System.in);
+        Optional<Combustivel> combustivelASerEditado;
+        listagemDeCombustiveis(todosOsCombustiveis);
+        do {
+            System.out.println("Digite o código do combustivel a ser editado: ");
+            Integer codCombustivelAEditar = ler.nextInt();
+            combustivelASerEditado = todosOsCombustiveis.stream().filter(combustivel -> combustivel.getCodigo() == codCombustivelAEditar).findFirst();
+            if (combustivelASerEditado.isEmpty()){
+                System.out.println("Codigo Inválido");
+            }
+        }while (combustivelASerEditado.isEmpty());
+        System.out.println("Digite o novo preço para o combustivel: ");
+        String gabiarra = ler.next();
+        combustivelASerEditado.get().setPreco(Double.parseDouble(gabiarra));
+    }
 }

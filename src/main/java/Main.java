@@ -49,8 +49,9 @@ public class Main {
                 case 8 -> deletarCombustivel(todosOsCombustiveis);
                 case 9 -> editarPrecoCombustivel(todosOsCombustiveis);
                 case 10 -> editarEstoqueCombustivel(todosOsCombustiveis);
+                case 11 -> incrementoNoEstoqueDeCombustivel(todosOsCombustiveis);
 
-                case 11 -> System.out.println("Obrigado por utilizar o SisPetro");
+                case 12 -> System.out.println("Obrigado por utilizar o SisPetro");
                 default -> System.out.println("Opção invalida");
             }
         }
@@ -94,18 +95,29 @@ public class Main {
     public static void deletarProduto(ArrayList<Produto> todosOsProdutos){
         Scanner ler = new Scanner(System.in);
         listagemDeProdutos(todosOsProdutos);
-        System.out.println("Digite o código do produto que deseja deletar: ");
-        Integer codigoADeletar = ler.nextInt();
-        todosOsProdutos.removeIf( produto -> produto.getCodigo() == codigoADeletar);
+        Boolean removeu;
+        do {
+            System.out.println("Digite o código do produto que deseja deletar: ");
+            Integer codigoADeletar = ler.nextInt();
+            removeu = todosOsProdutos.removeIf(produto -> produto.getCodigo() == codigoADeletar);
+            if(removeu == false){
+                System.out.println("Código Inválido");
+            }
+        }while (removeu == false);
     }
 
     public static void editarProduto(ArrayList<Produto> todosOsProdutos){
         Scanner ler = new Scanner(System.in);
         Optional<Produto> produtoASerEditado;
         listagemDeProdutos(todosOsProdutos);
-        System.out.println("Digite o código do produto que deseja editar: ");
-        Integer codProdutoAEditar = ler.nextInt();
-        produtoASerEditado = todosOsProdutos.stream().filter(produto -> produto.getCodigo() == codProdutoAEditar).findFirst();
+        do {
+            System.out.println("Digite o código do produto que deseja editar: ");
+            Integer codProdutoAEditar = ler.nextInt();
+            produtoASerEditado = todosOsProdutos.stream().filter(produto -> produto.getCodigo() == codProdutoAEditar).findFirst();
+            if(produtoASerEditado.isEmpty()){
+                System.out.println("Código Inválido");
+            }
+        }while (produtoASerEditado.isEmpty());
 
         System.out.println("Digite a descrição do Produto: ");
         produtoASerEditado.get().setDescricao(ler.next());
@@ -173,16 +185,22 @@ public class Main {
             System.out.print(c.getCodigo() + "\t");
             System.out.print(c.getTipo() + "\t");
             System.out.print(c.getLitragemEmEstoque() + "\t");
-            System.out.print(c.getPreco() + "\t");
+            System.out.println(c.getPreco() + "\t");
         }
     }
 
-    public static void deletarCombustivel(ArrayList<Combustivel> todosOsCombustiveis){
+    public static void deletarCombustivel(ArrayList<Combustivel> todosOsCombustiveis) {
         Scanner ler = new Scanner(System.in);
         listagemDeCombustiveis(todosOsCombustiveis);
-        System.out.println("Digite o códido do combustivel a ser deletado: ");
-        Integer codigoADeletar = ler.nextInt();
-        todosOsCombustiveis.removeIf( combustivel -> combustivel.getCodigo() == codigoADeletar);
+        Boolean removeu;
+        do {
+            System.out.println("Digite o códido do combustivel a ser deletado: ");
+            Integer codigoADeletar = ler.nextInt();
+            removeu = todosOsCombustiveis.removeIf(combustivel -> combustivel.getCodigo() == codigoADeletar);
+            if (removeu == false) {
+                System.out.println("Código Inválido");
+            }
+        } while (removeu == false);
     }
 
     public static void editarPrecoCombustivel(ArrayList<Combustivel> todosOsCombustiveis){
@@ -217,6 +235,24 @@ public class Main {
         System.out.println("Digite a nova litragem em estoque: ");
         String gambiarra = ler.next();
         combustivelASerEditado.get().setLitragemEmEstoque(Double.parseDouble(gambiarra));
+    }
+
+    public static void incrementoNoEstoqueDeCombustivel(ArrayList<Combustivel> todosOsCombustiveis){
+        Scanner ler = new Scanner(System.in);
+        listagemDeCombustiveis(todosOsCombustiveis);
+        Optional<Combustivel> combustivelAIncrementar;
+        do {
+            System.out.println("Digite o código do combustivel a ser incrementado");
+            Integer codCombustivelAIncrementar = ler.nextInt();
+            combustivelAIncrementar = todosOsCombustiveis.stream().filter(combustivel -> combustivel.getCodigo() == codCombustivelAIncrementar).findFirst();
+            if (combustivelAIncrementar.isEmpty()){
+                System.out.println("Código Inválido");
+            }
+        }while (combustivelAIncrementar.isEmpty());
+        System.out.println("Digite o valor a ser incrementado: ");
+        String gambiarra = ler.next();
+        Double valorASerIncrementado = Double.parseDouble(gambiarra);
+        combustivelAIncrementar.get().incrementoEstoque(valorASerIncrementado);
     }
 
 }

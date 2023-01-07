@@ -24,6 +24,10 @@ public class Combustivel {
         this.litragemEmEstoque -= quantidadeVendida;
     }
 
+    public void incrementoEstoque(Double quantidadeAIncrementar){
+        this.litragemEmEstoque += quantidadeAIncrementar;
+    }
+
     public Integer getCodigo() {
         return this.codigo;
     }

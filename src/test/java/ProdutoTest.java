@@ -17,5 +17,12 @@ public class ProdutoTest {
         produto.baixaEstoque(5);
         Assertions.assertEquals(25,produto.getEstoque());
     }
+
+    @Test
+    public void deveSomarNoEstoqueAQuantidadeAIncrementar(){
+        Produto produto = new Produto();
+        produto.setEstoque(200);
+        produto.incrementoEstoque(60);
+        Assertions.assertEquals(260,produto.getEstoque());
+    }
 }
-+

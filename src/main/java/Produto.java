@@ -1,3 +1,5 @@
+import java.security.PublicKey;
+
 public class Produto {
        private Integer codigo;
        private String descricao;
@@ -22,6 +24,10 @@ public class Produto {
 
        public void baixaEstoque(Integer quantidadeVendida){
               this.quantidadeEstoque -= quantidadeVendida;
+       }
+
+       public void incrementoEstoque(Integer quantidadeAIncrementar){
+              this.quantidadeEstoque += quantidadeAIncrementar;
        }
 
 

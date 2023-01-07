@@ -4,7 +4,7 @@ import java.util.stream.Stream;
 
 public class Main {
 
-    public static final Integer SAIR = 11;
+    public static final Integer SAIR = 12;
     public static void main(String[] args){
 
         ArrayList<Produto> todosOsProdutos = new ArrayList<>();
@@ -18,18 +18,19 @@ public class Main {
 
         while(opcao != SAIR) {
             System.out.println("Selecione uma opção: ");
-            System.out.println("1- Cadastrar Produto");
+            System.out.println("1- Cadastrar produto");
             System.out.println("2- Listar produtos");
             System.out.println("3- Deletar produto");
             System.out.println("4- Editar produto");
             System.out.println("5- Incrementar estoque do produto");
-            System.out.println("6- Cadastrar Combustivel");
-            System.out.println("7- Listar Combustiveis");
-            System.out.println("8- Deletar Combustivel");
-            System.out.println("9- Editar preço do Combustivel");
-            System.out.println("10- Editar estoque do Combustivel");
+            System.out.println("6- Cadastrar combustivel");
+            System.out.println("7- Listar combustiveis");
+            System.out.println("8- Deletar combustivel");
+            System.out.println("9- Editar preço do combustivel");
+            System.out.println("10- Editar estoque do combustivel");
+            System.out.println("11- Incrementar estoque de combustivel");
 
-            System.out.println("11- Sair");
+            System.out.println("12- Sair");
             opcao = ler.nextInt();
             switch (opcao) {
                 case 1 -> {
@@ -39,7 +40,7 @@ public class Main {
                 case 2 -> listagemDeProdutos(todosOsProdutos);
                 case 3 -> deletarProduto(todosOsProdutos);
                 case 4 -> editarProduto(todosOsProdutos);
-                case 5 -> editarProduto(todosOsProdutos);
+                case 5 -> incrementoNoEstoqueDeProduto(todosOsProdutos);
                 case 6 -> {
                     cadastroDeCombustiveis(proxCodBarrasCombustivel, todosOsCombustiveis);
                     proxCodBarrasCombustivel +=1;
@@ -117,6 +118,26 @@ public class Main {
         produtoASerEditado.get().setEstoque(ler.nextInt());
     }
 
+    public static void incrementoNoEstoqueDeProduto(ArrayList<Produto> todosOsProdutos){
+        Scanner ler = new Scanner(System.in);
+        listagemDeProdutos(todosOsProdutos);
+        Optional<Produto> produtoASerIncrementado;
+        do{
+            System.out.println("Digite o código do produto a ser incrementado: ");
+            Integer codProdutoAIncrementar = ler.nextInt();
+            produtoASerIncrementado = todosOsProdutos.stream().filter(produto -> produto.getCodigo() == codProdutoAIncrementar).findFirst();
+            if(produtoASerIncrementado.isEmpty()){
+                System.out.println("Código Inválido");
+            }
+        }while (produtoASerIncrementado.isEmpty());
+        System.out.println("Digite o valor a ser incrementado: ");
+        Integer valorAIncrementar = ler.nextInt();
+        produtoASerIncrementado.get().incrementoEstoque(valorAIncrementar);
+        //Integer valorEmEstoque = produtoASerIncrementado.get().getEstoque();
+        //Integer novoEstoque = valorEmEstoque + valorAIncrementar;
+        //produtoASerIncrementado.get().setEstoque(novoEstoque);
+    }
+
     public static void cadastroDeCombustiveis(Integer proxCodBarrasCombustivel, ArrayList<Combustivel> todosOsCombustiveis){
         Scanner ler = new Scanner(System.in);
         System.out.println("Criação de novo Combustivel");
@@ -149,10 +170,10 @@ public class Main {
 
     public static void listagemDeCombustiveis(ArrayList<Combustivel> todosOsCombustiveis){
         for(Combustivel c : todosOsCombustiveis){
-            System.out.println(c.getCodigo() + "\t");
-            System.out.println(c.getTipo() + "\t");
-            System.out.println(c.getLitragemEmEstoque() + "\t");
-            System.out.println(c.getPreco() + "\t");
+            System.out.print(c.getCodigo() + "\t");
+            System.out.print(c.getTipo() + "\t");
+            System.out.print(c.getLitragemEmEstoque() + "\t");
+            System.out.print(c.getPreco() + "\t");
         }
     }
 
@@ -197,4 +218,5 @@ public class Main {
         String gambiarra = ler.next();
         combustivelASerEditado.get().setLitragemEmEstoque(Double.parseDouble(gambiarra));
     }
+
 }

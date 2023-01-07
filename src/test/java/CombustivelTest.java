@@ -35,5 +35,11 @@ public class CombustivelTest {
     }
 
     @Test
-    public void deveCriar
+    public void deveCriarHistoricoDePreco(){
+        Combustivel combustivel = new Combustivel();
+        combustivel.setPreco(2.0);
+        HistoricoDePreco resultado = combustivel.criaHistoricoDePreco(6.3);
+        Assertions.assertEquals(2.0, resultado.getPrecoAnterior());
+        Assertions.assertEquals(6.3, resultado.getPrecoAtual());
+    }
 }

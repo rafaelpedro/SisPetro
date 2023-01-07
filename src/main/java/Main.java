@@ -4,7 +4,7 @@ import java.util.stream.Stream;
 
 public class Main {
 
-    public static final Integer SAIR = 10;
+    public static final Integer SAIR = 11;
     public static void main(String[] args){
 
         ArrayList<Produto> todosOsProdutos = new ArrayList<>();
@@ -22,13 +22,14 @@ public class Main {
             System.out.println("2- Listar produtos");
             System.out.println("3- Deletar produto");
             System.out.println("4- Editar produto");
-            System.out.println("5- Cadastrar Combustivel");
-            System.out.println("6- Listar Combustiveis");
-            System.out.println("7- Deletar Combustivel");
-            System.out.println("8- Editar preço do Combustivel");
-            System.out.println("9- Editar estoque do Combustivel");
+            System.out.println("5- Incrementar estoque do produto");
+            System.out.println("6- Cadastrar Combustivel");
+            System.out.println("7- Listar Combustiveis");
+            System.out.println("8- Deletar Combustivel");
+            System.out.println("9- Editar preço do Combustivel");
+            System.out.println("10- Editar estoque do Combustivel");
 
-            System.out.println("10- Sair");
+            System.out.println("11- Sair");
             opcao = ler.nextInt();
             switch (opcao) {
                 case 1 -> {
@@ -38,16 +39,17 @@ public class Main {
                 case 2 -> listagemDeProdutos(todosOsProdutos);
                 case 3 -> deletarProduto(todosOsProdutos);
                 case 4 -> editarProduto(todosOsProdutos);
-                case 5 -> {
+                case 5 -> editarProduto(todosOsProdutos);
+                case 6 -> {
                     cadastroDeCombustiveis(proxCodBarrasCombustivel, todosOsCombustiveis);
                     proxCodBarrasCombustivel +=1;
                 }
-                case 6 -> listagemDeCombustiveis(todosOsCombustiveis);
-                case 7 -> deletarCombustivel(todosOsCombustiveis);
-                case 8 -> editarPrecoCombustivel(todosOsCombustiveis);
-                // case 9 ->
+                case 7 -> listagemDeCombustiveis(todosOsCombustiveis);
+                case 8 -> deletarCombustivel(todosOsCombustiveis);
+                case 9 -> editarPrecoCombustivel(todosOsCombustiveis);
+                case 10 -> editarEstoqueCombustivel(todosOsCombustiveis);
 
-                case 10 -> System.out.println("Obrigado por utilizar o SisPetro");
+                case 11 -> System.out.println("Obrigado por utilizar o SisPetro");
                 default -> System.out.println("Opção invalida");
             }
         }
@@ -164,8 +166,8 @@ public class Main {
 
     public static void editarPrecoCombustivel(ArrayList<Combustivel> todosOsCombustiveis){
         Scanner ler = new Scanner(System.in);
-        Optional<Combustivel> combustivelASerEditado;
         listagemDeCombustiveis(todosOsCombustiveis);
+        Optional<Combustivel> combustivelASerEditado;
         do {
             System.out.println("Digite o código do combustivel a ser editado: ");
             Integer codCombustivelAEditar = ler.nextInt();
@@ -177,5 +179,22 @@ public class Main {
         System.out.println("Digite o novo preço para o combustivel: ");
         String gabiarra = ler.next();
         combustivelASerEditado.get().setPreco(Double.parseDouble(gabiarra));
+    }
+
+    public static void editarEstoqueCombustivel(ArrayList<Combustivel> todosOsCombustiveis){
+        Scanner ler = new Scanner(System.in);
+        listagemDeCombustiveis(todosOsCombustiveis);
+        Optional<Combustivel> combustivelASerEditado;
+        do{
+            System.out.println("Digite o código do combustivel a ser editado: ");
+            Integer codCombustivelAEditar = ler.nextInt();
+            combustivelASerEditado = todosOsCombustiveis.stream().filter(combustivel -> combustivel.getCodigo() == codCombustivelAEditar).findFirst();
+            if(combustivelASerEditado.isEmpty()){
+                System.out.println("Código Inválido");
+            }
+        }while (combustivelASerEditado.isEmpty());
+        System.out.println("Digite a nova litragem em estoque: ");
+        String gambiarra = ler.next();
+        combustivelASerEditado.get().setLitragemEmEstoque(Double.parseDouble(gambiarra));
     }
 }

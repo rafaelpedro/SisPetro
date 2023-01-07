@@ -4,7 +4,7 @@ import java.util.stream.Stream;
 
 public class Main {
 
-    public static final Integer SAIR = 9;
+    public static final Integer SAIR = 10;
     public static void main(String[] args){
 
         ArrayList<Produto> todosOsProdutos = new ArrayList<>();
@@ -23,11 +23,12 @@ public class Main {
             System.out.println("3- Deletar produto");
             System.out.println("4- Editar produto");
             System.out.println("5- Cadastrar Combustivel");
-            System.out.println("6- Deletar Combustivel");
-            System.out.println("7- Editar preço do Combustivel");
-            System.out.println("8- Editar estoque do Combustivel");
+            System.out.println("6- Listar Combustiveis");
+            System.out.println("7- Deletar Combustivel");
+            System.out.println("8- Editar preço do Combustivel");
+            System.out.println("9- Editar estoque do Combustivel");
 
-            System.out.println("9- Sair");
+            System.out.println("10- Sair");
             opcao = ler.nextInt();
             switch (opcao) {
                 case 1 -> {
@@ -41,11 +42,12 @@ public class Main {
                     cadastroDeCombustiveis(proxCodBarrasCombustivel, todosOsCombustiveis);
                     proxCodBarrasCombustivel +=1;
                 }
-                // case 6 ->
-                // case 7 ->
-                // case 8 ->
+                case 6 -> listagemDeCombustiveis(todosOsCombustiveis);
+                case 7 -> deletarCombustivel(todosOsCombustiveis);
+                case 8 ->
+                // case 9 ->
 
-                case 9 -> System.out.println("Obrigado por utilizar o SisPetro");
+                case 10 -> System.out.println("Obrigado por utilizar o SisPetro");
                 default -> System.out.println("Opção invalida");
             }
         }
@@ -111,9 +113,6 @@ public class Main {
 
         System.out.println("Digite a quantidade a ser cadastrada no estoque: ");
         produtoASerEditado.get().setEstoque(ler.nextInt());
-
-
-
     }
 
     public static void cadastroDeCombustiveis(Integer proxCodBarrasCombustivel, ArrayList<Combustivel> todosOsCombustiveis){
@@ -145,4 +144,23 @@ public class Main {
 
         todosOsCombustiveis.add(combustivel);
     }
+
+    public static void listagemDeCombustiveis(ArrayList<Combustivel> todosOsCombustiveis){
+        for(Combustivel c : todosOsCombustiveis){
+            System.out.println(c.getCodigo() + "\t");
+            System.out.println(c.getTipo() + "\t");
+            System.out.println(c.getLitragemEmEstoque() + "\t");
+            System.out.println(c.getPreco() + "\t");
+        }
+    }
+
+    public static void deletarCombustivel(ArrayList<Combustivel> todosOsCombustiveis){
+        Scanner ler = new Scanner(System.in);
+        listagemDeCombustiveis(todosOsCombustiveis);
+        System.out.println("Digite o códido do combustivel a ser deletado: ");
+        Integer codigoADeletar = ler.nextInt();
+        todosOsCombustiveis.removeIf( combustivel -> combustivel.getCodigo() == codigoADeletar);
+    }
+
+    public static void
 }

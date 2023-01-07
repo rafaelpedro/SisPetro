@@ -186,6 +186,12 @@ public class Main {
             System.out.print(c.getTipo() + "\t");
             System.out.print(c.getLitragemEmEstoque() + "\t");
             System.out.println(c.getPreco() + "\t");
+            System.out.println("Data Alteração \t Preço Anterior \t Preço Atual");
+            for(HistoricoDePreco h : c.getHistoricoDePrecos()) {
+                System.out.print(h.getDataDeAlteracao() + "\t \t \t");
+                System.out.print(h.getPrecoAnterior() + "\t \t \t");
+                System.out.println(h.getPrecoAtual() + "\t");
+            }
         }
     }
 
@@ -217,7 +223,10 @@ public class Main {
         }while (combustivelASerEditado.isEmpty());
         System.out.println("Digite o novo preço para o combustivel: ");
         String gabiarra = ler.next();
-        combustivelASerEditado.get().setPreco(Double.parseDouble(gabiarra));
+        Double novoPreco = Double.parseDouble(gabiarra);
+        HistoricoDePreco novoHistorico = combustivelASerEditado.get().criaHistoricoDePreco(novoPreco);
+        combustivelASerEditado.get().setPreco(novoPreco);
+        combustivelASerEditado.get().addHistoricoDePrecos(novoHistorico);
     }
 
     public static void editarEstoqueCombustivel(ArrayList<Combustivel> todosOsCombustiveis){

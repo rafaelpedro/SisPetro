@@ -159,10 +159,19 @@ public class Main {
         // Aqui tem que fazer algo para só poder selecionar os combustiveis setados
         System.out.println("Segue os tipos de combustiveis validos para cadastro:");
         Stream.of(TipoDeCombustivel.values()).forEach(System.out::println);
+        Optional<Combustivel> combustivelASerComparado;
+        TipoDeCombustivel gambiarra;
+        do {
         System.out.println("Digite o tipo de combustivel desejado:");
         String tipoDigitado = ler.next();
-        TipoDeCombustivel gambiarra3 = TipoDeCombustivel.valueOf(tipoDigitado);
-        combustivel.setTipo(gambiarra3);
+        gambiarra = TipoDeCombustivel.valueOf(tipoDigitado);
+            TipoDeCombustivel finalGambiarra = gambiarra;
+            combustivelASerComparado = todosOsCombustiveis.stream().filter(combustivel1 -> combustivel1.getTipo() == finalGambiarra).findFirst();
+            if(combustivelASerComparado.isPresent()) {
+                System.out.println("Combustivel já cadastrado");
+            }
+        }while (combustivelASerComparado.isPresent());
+        combustivel.setTipo(gambiarra);
 
         //TipoDeCombustivel[] todosOsTiposDeCombustiveis = TipoDeCombustivel.values();
         //List<TipoDeCombustivel> listaDoTipoDeCombustivel = Arrays.asList(todosOsTiposDeCombustiveis);
@@ -209,7 +218,7 @@ public class Main {
         } while (removeu == false);
     }
 
-    public static void editarPrecoCombustivel(ArrayList<Combustivel> todosOsCombustiveis){
+    public static void editarPrecoCombustivel(ArrayList<Combustivel> todosOsCombustiveis) {
         Scanner ler = new Scanner(System.in);
         listagemDeCombustiveis(todosOsCombustiveis);
         Optional<Combustivel> combustivelASerEditado;

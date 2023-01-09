@@ -12,6 +12,7 @@ public class Combustivel {
     public  void addHistoricoDePrecos(HistoricoDePreco novoHistorico){
         historicoDePrecos.add(novoHistorico);
     }
+
     public HistoricoDePreco criaHistoricoDePreco(Double novoPreco){
         Double precoAtual = this.getPreco();
         HistoricoDePreco novoHistorico = new HistoricoDePreco();
@@ -20,6 +21,7 @@ public class Combustivel {
         novoHistorico.setDataDeAlteracao(LocalDate.now());
         return novoHistorico;
     }
+
     public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }

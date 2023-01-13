@@ -35,7 +35,7 @@ public class Main {
             System.out.println("13- Listar usuários");
 
             System.out.println("16- Sair");
-            opcao = ler.nextInt();
+            opcao = Integer.parseInt(ler.nextLine());
             switch (opcao) {
                 case 1 -> {
                     cadastroDeProdutos(proxCodBarrasProduto, todosOsProdutos);
@@ -74,14 +74,14 @@ public class Main {
         produto.setCodigo(proxCodBarrasProduto);
 
         System.out.println("Digite a descrição do Produto: ");
-        produto.setDescricao(ler.next());
+        produto.setDescricao(ler.nextLine());
 
         System.out.println("Digite o preço do produto: ");
-        String gambiarra = ler.next();
+        String gambiarra = ler.nextLine();
         produto.setPreco(Double.parseDouble(gambiarra));
 
         System.out.println("Digite a quantidade a ser cadastrada no estoque: ");
-        produto.setEstoque(ler.nextInt());
+        produto.setEstoque(Integer.parseInt(ler.nextLine()));
         //produto.baixaEstoque(1);
 
         todosOsProdutos.add(produto);
@@ -109,7 +109,7 @@ public class Main {
         Boolean removeu;
         do {
             System.out.println("Digite o código do produto que deseja deletar: ");
-            Integer codigoADeletar = ler.nextInt();
+            Integer codigoADeletar = Integer.parseInt(ler.nextLine());
             removeu = todosOsProdutos.removeIf(produto -> produto.getCodigo() == codigoADeletar);
             if(removeu == false){
                 System.out.println("Código Inválido");
@@ -123,7 +123,7 @@ public class Main {
         listagemDeProdutos(todosOsProdutos);
         do {
             System.out.println("Digite o código do produto que deseja editar: ");
-            Integer codProdutoAEditar = ler.nextInt();
+            Integer codProdutoAEditar = Integer.parseInt(ler.nextLine());
             produtoASerEditado = todosOsProdutos.stream().filter(produto -> produto.getCodigo() == codProdutoAEditar).findFirst();
             if(produtoASerEditado.isEmpty()){
                 System.out.println("Código Inválido");
@@ -131,14 +131,14 @@ public class Main {
         }while (produtoASerEditado.isEmpty());
 
         System.out.println("Digite a descrição do Produto: ");
-        produtoASerEditado.get().setDescricao(ler.next());
+        produtoASerEditado.get().setDescricao(ler.nextLine());
 
         System.out.println("Digite o preço do produto: ");
-        String gambiarra = ler.next();
+        String gambiarra = ler.nextLine();
         produtoASerEditado.get().setPreco(Double.parseDouble(gambiarra));
 
         System.out.println("Digite a quantidade a ser cadastrada no estoque: ");
-        produtoASerEditado.get().setEstoque(ler.nextInt());
+        produtoASerEditado.get().setEstoque(Integer.parseInt(ler.nextLine()));
     }
 
     public static void incrementoNoEstoqueDeProduto(ArrayList<Produto> todosOsProdutos){
@@ -147,14 +147,14 @@ public class Main {
         Optional<Produto> produtoASerIncrementado;
         do{
             System.out.println("Digite o código do produto a ser incrementado: ");
-            Integer codProdutoAIncrementar = ler.nextInt();
+            Integer codProdutoAIncrementar = Integer.parseInt(ler.nextLine());
             produtoASerIncrementado = todosOsProdutos.stream().filter(produto -> produto.getCodigo() == codProdutoAIncrementar).findFirst();
             if(produtoASerIncrementado.isEmpty()){
                 System.out.println("Código Inválido");
             }
         }while (produtoASerIncrementado.isEmpty());
         System.out.println("Digite o valor a ser incrementado: ");
-        Integer valorAIncrementar = ler.nextInt();
+        Integer valorAIncrementar = Integer.parseInt(ler.nextLine());
         produtoASerIncrementado.get().incrementoEstoque(valorAIncrementar);
         //Integer valorEmEstoque = produtoASerIncrementado.get().getEstoque();
         //Integer novoEstoque = valorEmEstoque + valorAIncrementar;
@@ -170,30 +170,39 @@ public class Main {
         // Aqui tem que fazer algo para só poder selecionar os combustiveis setados
         System.out.println("Segue os tipos de combustiveis validos para cadastro:");
         Stream.of(TipoDeCombustivel.values()).forEach(System.out::println);
-        Optional<Combustivel> combustivelASerComparado;
-        TipoDeCombustivel gambiarra;
+        Optional<Combustivel> combustivelASerComparado = null;
+        TipoDeCombustivel gambiarra = null;
+        boolean excecao;
         do {
-        System.out.println("Digite o tipo de combustivel desejado:");
-        String tipoDigitado = ler.next();
-        gambiarra = TipoDeCombustivel.valueOf(tipoDigitado);
-            TipoDeCombustivel finalGambiarra = gambiarra;
-            combustivelASerComparado = todosOsCombustiveis.stream().filter(combustivel1 -> combustivel1.getTipo() == finalGambiarra).findFirst();
-            if(combustivelASerComparado.isPresent()) {
-                System.out.println("Combustivel já cadastrado");
-            }
-        }while (combustivelASerComparado.isPresent());
-        combustivel.setTipo(gambiarra);
+            System.out.println("Digite o tipo de combustivel desejado:");
+            String tipoDigitado = ler.nextLine();
+            tipoDigitado = tipoDigitado.toUpperCase();
 
+            try {
+                excecao = false;
+                gambiarra = TipoDeCombustivel.valueOf(tipoDigitado);
+                TipoDeCombustivel finalGambiarra = gambiarra;
+                combustivelASerComparado = todosOsCombustiveis.stream().filter(combustivel1 -> combustivel1.getTipo() == finalGambiarra).findFirst();
+                if(combustivelASerComparado.isPresent()) {
+                    System.out.println("Combustivel já cadastrado");
+                }
+            }catch (Exception exception){
+                excecao = true;
+                System.out.println("Opção Inválida");
+            }
+        }while (excecao || combustivelASerComparado.isPresent());
+
+        combustivel.setTipo(gambiarra);
         //TipoDeCombustivel[] todosOsTiposDeCombustiveis = TipoDeCombustivel.values();
         //List<TipoDeCombustivel> listaDoTipoDeCombustivel = Arrays.asList(todosOsTiposDeCombustiveis);
-        //System.out.println(tipoDigitado + "existe na lista como:" + (listaDoTipoDeCombustivel.contains(tipoDigitado)));
+        //System.out.println(tipoDigitado + "existe na lista como:" + (listaDoTipoDeCombustivel.contains(tip
 
         System.out.println("Digite o preço do combustivel: ");
-        String gambiarra1 = ler.next();
+        String gambiarra1 = ler.nextLine();
         combustivel.setPreco(Double.parseDouble(gambiarra1));
 
         System.out.println("Digite a litragem a ser cadastrada no estoque: ");
-        String gambirra2 = ler.next();
+        String gambirra2 = ler.nextLine();
         combustivel.setLitragemEmEstoque(Double.parseDouble(gambirra2));
         //combustivel.baixaLitragemEmEstoque(1);
 
@@ -221,7 +230,7 @@ public class Main {
         Boolean removeu;
         do {
             System.out.println("Digite o códido do combustivel a ser deletado: ");
-            Integer codigoADeletar = ler.nextInt();
+            Integer codigoADeletar = Integer.parseInt(ler.nextLine());
             removeu = todosOsCombustiveis.removeIf(combustivel -> combustivel.getCodigo() == codigoADeletar);
             if (removeu == false) {
                 System.out.println("Código Inválido");
@@ -235,14 +244,14 @@ public class Main {
         Optional<Combustivel> combustivelASerEditado;
         do {
             System.out.println("Digite o código do combustivel a ser editado: ");
-            Integer codCombustivelAEditar = ler.nextInt();
+            Integer codCombustivelAEditar = Integer.parseInt(ler.nextLine());
             combustivelASerEditado = todosOsCombustiveis.stream().filter(combustivel -> combustivel.getCodigo() == codCombustivelAEditar).findFirst();
             if (combustivelASerEditado.isEmpty()){
                 System.out.println("Codigo Inválido");
             }
         }while (combustivelASerEditado.isEmpty());
         System.out.println("Digite o novo preço para o combustivel: ");
-        String gabiarra = ler.next();
+        String gabiarra = ler.nextLine();
         Double novoPreco = Double.parseDouble(gabiarra);
         HistoricoDePreco novoHistorico = combustivelASerEditado.get().criaHistoricoDePreco(novoPreco);
         combustivelASerEditado.get().setPreco(novoPreco);
@@ -255,14 +264,14 @@ public class Main {
         Optional<Combustivel> combustivelASerEditado;
         do{
             System.out.println("Digite o código do combustivel a ser editado: ");
-            Integer codCombustivelAEditar = ler.nextInt();
+            Integer codCombustivelAEditar = Integer.parseInt(ler.nextLine());
             combustivelASerEditado = todosOsCombustiveis.stream().filter(combustivel -> combustivel.getCodigo() == codCombustivelAEditar).findFirst();
             if(combustivelASerEditado.isEmpty()){
                 System.out.println("Código Inválido");
             }
         }while (combustivelASerEditado.isEmpty());
         System.out.println("Digite a nova litragem em estoque: ");
-        String gambiarra = ler.next();
+        String gambiarra = ler.nextLine();
         combustivelASerEditado.get().setLitragemEmEstoque(Double.parseDouble(gambiarra));
     }
 
@@ -272,14 +281,14 @@ public class Main {
         Optional<Combustivel> combustivelAIncrementar;
         do {
             System.out.println("Digite o código do combustivel a ser incrementado");
-            Integer codCombustivelAIncrementar = ler.nextInt();
+            Integer codCombustivelAIncrementar = Integer.parseInt(ler.nextLine());
             combustivelAIncrementar = todosOsCombustiveis.stream().filter(combustivel -> combustivel.getCodigo() == codCombustivelAIncrementar).findFirst();
             if (combustivelAIncrementar.isEmpty()){
                 System.out.println("Código Inválido");
             }
         }while (combustivelAIncrementar.isEmpty());
         System.out.println("Digite o valor a ser incrementado: ");
-        String gambiarra = ler.next();
+        String gambiarra = ler.nextLine();
         Double valorASerIncrementado = Double.parseDouble(gambiarra);
         combustivelAIncrementar.get().incrementoEstoque(valorASerIncrementado);
     }
@@ -298,7 +307,7 @@ public class Main {
         do {
             excecao = false;
             System.out.println("Digite o cargo a ser cadastrado: ");
-            String cargoDigitado = ler.next();
+            String cargoDigitado = ler.nextLine();
             cargoDigitado = cargoDigitado.toUpperCase();
             try {
                 gambiarra = Cargo.valueOf(cargoDigitado);

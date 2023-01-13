@@ -4,15 +4,17 @@ import java.util.stream.Stream;
 
 public class Main {
 
-    public static final Integer SAIR = 12;
+    public static final Integer SAIR = 16;
     public static void main(String[] args){
 
         ArrayList<Produto> todosOsProdutos = new ArrayList<>();
         ArrayList<Combustivel> todosOsCombustiveis = new ArrayList<>();
+        ArrayList<Usuario> todosOsUsuarios = new ArrayList<>();
 
         Scanner ler = new Scanner(System.in);
         Integer proxCodBarrasProduto = 1;
         Integer proxCodBarrasCombustivel = 1;
+        Integer proxCodDeUsuario = 1;
         Integer opcao = 1;
 
 
@@ -29,8 +31,10 @@ public class Main {
             System.out.println("9- Editar preço do combustivel");
             System.out.println("10- Editar estoque do combustivel");
             System.out.println("11- Incrementar estoque de combustivel");
+            System.out.println("12- Cadastro de usuário");
+            System.out.println("13- Listar usuários");
 
-            System.out.println("12- Sair");
+            System.out.println("16- Sair");
             opcao = ler.nextInt();
             switch (opcao) {
                 case 1 -> {
@@ -50,8 +54,15 @@ public class Main {
                 case 9 -> editarPrecoCombustivel(todosOsCombustiveis);
                 case 10 -> editarEstoqueCombustivel(todosOsCombustiveis);
                 case 11 -> incrementoNoEstoqueDeCombustivel(todosOsCombustiveis);
+                case 12 -> {
+                    cadastroDeUsuario(proxCodDeUsuario, todosOsUsuarios);
+                    proxCodDeUsuario += 1;
+                }
+                case 13 -> listagemDeUsuarios(todosOsUsuarios);
+                //case 14 -> ;
+                //case 15 -> ;
 
-                case 12 -> System.out.println("Obrigado por utilizar o SisPetro");
+                case 16 -> System.out.println("Obrigado por utilizar o SisPetro");
                 default -> System.out.println("Opção invalida");
             }
         }
@@ -271,6 +282,46 @@ public class Main {
         String gambiarra = ler.next();
         Double valorASerIncrementado = Double.parseDouble(gambiarra);
         combustivelAIncrementar.get().incrementoEstoque(valorASerIncrementado);
+    }
+
+    public static void cadastroDeUsuario(Integer proxCodDeUsuario, ArrayList<Usuario> todosOsUsuarios){
+        Scanner ler = new Scanner(System.in);
+        System.out.println("Criação de novo Usuário");
+        Usuario usuario = new Usuario();
+        usuario.setCodigo(proxCodDeUsuario);
+        Cargo gambiarra = null;
+        boolean excecao;
+
+        System.out.println("Segue os cargos elegiveis para cadastro: ");
+        Stream.of(Cargo.values()).forEach(System.out::println);
+
+        do {
+            excecao = false;
+            System.out.println("Digite o cargo a ser cadastrado: ");
+            String cargoDigitado = ler.next();
+            cargoDigitado = cargoDigitado.toUpperCase();
+            try {
+                gambiarra = Cargo.valueOf(cargoDigitado);
+            } catch (Exception exception) {
+                excecao = true;
+                System.out.println("Opção inválida");
+            }
+        }while (excecao);
+        usuario.setCargo(gambiarra);
+        
+        System.out.println("Digite o nome do usuário: ");
+        String gambi = ler.nextLine();
+        usuario.setNome(gambi);
+
+        todosOsUsuarios.add(usuario);
+    }
+
+    public static void listagemDeUsuarios(ArrayList<Usuario> todosOsUsuarios){
+        for(Usuario u : todosOsUsuarios) {
+            System.out.print(u.getCodigo() + "\t");
+            System.out.print(u.getNome() + "\t");
+            System.out.println(u.getCargo() + "\t");
+        }
     }
 
 }

@@ -4,7 +4,7 @@ import java.util.stream.Stream;
 
 public class Main {
 
-    public static final Integer SAIR = 16;
+    public static final Integer SAIR = 15;
     public static void main(String[] args){
 
         ArrayList<Produto> todosOsProdutos = new ArrayList<>();
@@ -33,8 +33,9 @@ public class Main {
             System.out.println("11- Incrementar estoque de combustivel");
             System.out.println("12- Cadastro de usuário");
             System.out.println("13- Listar usuários");
+            System.out.println("14- Editar cargo de usuario");
 
-            System.out.println("16- Sair");
+            System.out.println("15- Sair");
             opcao = Integer.parseInt(ler.nextLine());
             switch (opcao) {
                 case 1 -> {
@@ -59,10 +60,10 @@ public class Main {
                     proxCodDeUsuario += 1;
                 }
                 case 13 -> listagemDeUsuarios(todosOsUsuarios);
-                //case 14 -> ;
+                case 14 -> editarCargoDeUsuario(todosOsUsuarios);
                 //case 15 -> ;
 
-                case 16 -> System.out.println("Obrigado por utilizar o SisPetro");
+                case 15 -> System.out.println("Obrigado por utilizar o SisPetro");
                 default -> System.out.println("Opção invalida");
             }
         }
@@ -331,6 +332,42 @@ public class Main {
             System.out.print(u.getNome() + "\t");
             System.out.println(u.getCargo() + "\t");
         }
+    }
+
+    public static void editarCargoDeUsuario(ArrayList<Usuario> todosOsUsuarios){
+        Scanner ler = new Scanner((System.in));
+        listagemDeUsuarios(todosOsUsuarios);
+        Optional<Usuario> usuarioASerEditado;
+        Cargo gambiarra = null;
+        boolean excecao;
+
+
+        do{
+            System.out.println("Digite o código do usuário a ser editado: ");
+            Integer codUsuarioAEditar = Integer.parseInt(ler.nextLine());
+            usuarioASerEditado = todosOsUsuarios.stream().filter(usuario -> usuario.getCodigo() == codUsuarioAEditar).findFirst();
+            if (usuarioASerEditado.isEmpty()){
+                System.out.println("Código Inválido");
+            }
+        }while (usuarioASerEditado.isEmpty());
+
+        System.out.println("Segue os cargos elegiveis para cadastro: ");
+        Stream.of(Cargo.values()).forEach(System.out::println);
+
+        do {
+            excecao = false;
+            System.out.println("Digite o cargo a ser cadastrado: ");
+            String cargoDigitado = ler.nextLine();
+            cargoDigitado = cargoDigitado.toUpperCase();
+            try {
+                gambiarra = Cargo.valueOf(cargoDigitado);
+            } catch (Exception exception) {
+                excecao = true;
+                System.out.println("Opção inválida");
+            }
+        }while (excecao);
+        // Cargo novoCargo = gambiarra;
+        usuarioASerEditado.get().setCargo(gambiarra);
     }
 
 }

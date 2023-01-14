@@ -6,6 +6,10 @@ public class Usuario {
 
     private Cargo cargo;
 
+    private String login;
+
+    private Integer senha;
+
 
     public void setCodigo(Integer codigo){
         this.codigo = codigo;
@@ -22,9 +26,24 @@ public class Usuario {
         }
        this.nome = sb.toString().replaceFirst(" ", "");
     }
-
     public void setCargo(Cargo cargo){
         this.cargo = cargo;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public Integer getSenha() {
+        return senha;
+    }
+
+    public void setSenha(Integer senha) {
+        this.senha = senha;
     }
 
     public Integer getCodigo(){

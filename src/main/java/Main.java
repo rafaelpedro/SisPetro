@@ -5,18 +5,26 @@ import java.util.stream.Stream;
 public class Main {
 
     public static final Integer SAIR = 15;
+    public static final String ADMIN_USUARIO = "ADMIN";
+    public static final Integer ADMIN_SENHA = 123456;
+
+    public static ArrayList<Produto> todosOsProdutos = new ArrayList<>();
+    public static ArrayList<Combustivel> todosOsCombustiveis = new ArrayList<>();
+    public static ArrayList<Usuario> todosOsUsuarios = new ArrayList<>();
     public static void main(String[] args){
-
-        ArrayList<Produto> todosOsProdutos = new ArrayList<>();
-        ArrayList<Combustivel> todosOsCombustiveis = new ArrayList<>();
-        ArrayList<Usuario> todosOsUsuarios = new ArrayList<>();
-
         Scanner ler = new Scanner(System.in);
         Integer proxCodBarrasProduto = 1;
         Integer proxCodBarrasCombustivel = 1;
         Integer proxCodDeUsuario = 1;
         Integer opcao = 1;
 
+        Usuario usuarioAdmin = new Usuario();
+        usuarioAdmin.setLogin(ADMIN_USUARIO);
+        usuarioAdmin.setSenha(ADMIN_SENHA);
+        usuarioAdmin.setNome("Mayza");
+        usuarioAdmin.setCodigo(0);
+        usuarioAdmin.setCargo(Cargo.ADMINISTRADOR);
+        todosOsUsuarios.add(usuarioAdmin);
 
         while(opcao != SAIR) {
             System.out.println("Selecione uma opção: ");
@@ -67,6 +75,25 @@ public class Main {
                 default -> System.out.println("Opção invalida");
             }
         }
+    }
+    public static void menuInicial(){
+        Scanner ler = new Scanner(System.in);
+        System.out.println("Bem-Vindo ao SisPetro");
+        boolean eUsuarioAdmin;
+        boolean eSenhaAdmin;
+        Optional<Usuario> optionalUsuario;
+        boolean eSenhaCorreta = false;
+        do {
+            System.out.println("Digite o seu login: ");
+            String loginDigitado = ler.nextLine();
+            System.out.println("Digite a sua senha numérica: ");
+            Integer senhaDigitada = Integer.parseInt(ler.nextLine());
+            optionalUsuario = todosOsUsuarios.stream().filter(usuario -> usuario.getLogin().equals(loginDigitado)).findFirst();
+            if(optionalUsuario.isPresent()){
+                eSenhaCorreta = optionalUsuario.get().getSenha().equals(senhaDigitada);
+            }
+        }while(optionalUsuario.isEmpty() || !eSenhaCorreta);
+
     }
     public static void cadastroDeProdutos(Integer proxCodBarrasProduto, ArrayList<Produto> todosOsProdutos){
         Scanner ler = new Scanner(System.in);
@@ -319,9 +346,14 @@ public class Main {
         }while (excecao);
         usuario.setCargo(gambiarra);
         
-        System.out.println("Digite o nome do usuário: ");
-        String gambi = ler.nextLine();
-        usuario.setNome(gambi);
+        System.out.println("Digite o nome do funcionario: ");
+        usuario.setNome(ler.nextLine());
+
+        System.out.println("Crie um login para o funcionario: ");
+        usuario.setNome(ler.nextLine());
+
+        System.out.println("Crie uma senha para o funcionario: ");
+        usuario.setNome(ler.nextLine());
 
         todosOsUsuarios.add(usuario);
     }

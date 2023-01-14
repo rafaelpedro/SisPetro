@@ -10,11 +10,17 @@ public class Usuario {
 
     private Integer senha;
 
-
+    //construtor
+    public Usuario (Integer codigo, String nome, Cargo cargo, String login, Integer senha){
+        this.codigo = codigo;
+        this.nome = nome;
+        this.cargo = cargo;
+        this.login = login;
+        this.senha = senha;
+    }
     public void setCodigo(Integer codigo){
         this.codigo = codigo;
     }
-
     public void setNome(String nome){
         nome = nome.toLowerCase();
         String[] partes = nome.split(" ");
@@ -29,23 +35,18 @@ public class Usuario {
     public void setCargo(Cargo cargo){
         this.cargo = cargo;
     }
-
     public String getLogin() {
         return login;
     }
-
     public void setLogin(String login) {
         this.login = login;
     }
-
     public Integer getSenha() {
         return senha;
     }
-
     public void setSenha(Integer senha) {
         this.senha = senha;
     }
-
     public Integer getCodigo(){
         return this.codigo;
     }

@@ -5,26 +5,22 @@ import java.util.stream.Stream;
 public class Main {
 
     public static final Integer SAIR = 15;
-    public static final String ADMIN_USUARIO = "ADMIN";
+    public static final String ADMIN_LOGIN = "ADMIN";
     public static final Integer ADMIN_SENHA = 123456;
-
     public static ArrayList<Produto> todosOsProdutos = new ArrayList<>();
     public static ArrayList<Combustivel> todosOsCombustiveis = new ArrayList<>();
     public static ArrayList<Usuario> todosOsUsuarios = new ArrayList<>();
+
+    public static Integer proxCodBarrasProduto = 1;
+    public static Integer proxCodBarrasCombustivel = 1;
+    public static Integer proxCodDeUsuario = 1;
     public static void main(String[] args){
         Scanner ler = new Scanner(System.in);
-        Integer proxCodBarrasProduto = 1;
-        Integer proxCodBarrasCombustivel = 1;
-        Integer proxCodDeUsuario = 1;
         Integer opcao = 1;
-
-        Usuario usuarioAdmin = new Usuario();
-        usuarioAdmin.setLogin(ADMIN_USUARIO);
-        usuarioAdmin.setSenha(ADMIN_SENHA);
-        usuarioAdmin.setNome("Mayza");
-        usuarioAdmin.setCodigo(0);
-        usuarioAdmin.setCargo(Cargo.ADMINISTRADOR);
+        Usuario usuarioAdmin = new Usuario(0,"Mayza Yuri", Cargo.ADMINISTRADOR, ADMIN_LOGIN, ADMIN_SENHA);
         todosOsUsuarios.add(usuarioAdmin);
+
+        menuInicial();
 
         while(opcao != SAIR) {
             System.out.println("Selecione uma opção: ");
@@ -47,29 +43,29 @@ public class Main {
             opcao = Integer.parseInt(ler.nextLine());
             switch (opcao) {
                 case 1 -> {
-                    cadastroDeProdutos(proxCodBarrasProduto, todosOsProdutos);
+                    cadastroDeProdutos();
                     proxCodBarrasProduto += 1;
                 }
-                case 2 -> listagemDeProdutos(todosOsProdutos);
-                case 3 -> deletarProduto(todosOsProdutos);
-                case 4 -> editarProduto(todosOsProdutos);
-                case 5 -> incrementoNoEstoqueDeProduto(todosOsProdutos);
+                case 2 -> listagemDeProdutos();
+                case 3 -> deletarProduto();
+                case 4 -> editarProduto();
+                case 5 -> incrementoNoEstoqueDeProduto();
                 case 6 -> {
-                    cadastroDeCombustiveis(proxCodBarrasCombustivel, todosOsCombustiveis);
+                    cadastroDeCombustiveis();
                     proxCodBarrasCombustivel +=1;
                 }
-                case 7 -> listagemDeCombustiveis(todosOsCombustiveis);
-                case 8 -> deletarCombustivel(todosOsCombustiveis);
-                case 9 -> editarPrecoCombustivel(todosOsCombustiveis);
-                case 10 -> editarEstoqueCombustivel(todosOsCombustiveis);
-                case 11 -> incrementoNoEstoqueDeCombustivel(todosOsCombustiveis);
+                case 7 -> listagemDeCombustiveis();
+                case 8 -> deletarCombustivel();
+                case 9 -> editarPrecoCombustivel();
+                case 10 -> editarEstoqueCombustivel();
+                case 11 -> incrementoNoEstoqueDeCombustivel();
                 case 12 -> {
-                    cadastroDeUsuario(proxCodDeUsuario, todosOsUsuarios);
+                    cadastroDeUsuario();
                     proxCodDeUsuario += 1;
                 }
-                case 13 -> listagemDeUsuarios(todosOsUsuarios);
-                case 14 -> editarCargoDeUsuario(todosOsUsuarios);
-                //case 15 -> ;
+                case 13 -> listagemDeUsuarios();
+                case 14 -> editarCargoDeUsuario();
+
 
                 case 15 -> System.out.println("Obrigado por utilizar o SisPetro");
                 default -> System.out.println("Opção invalida");
@@ -79,23 +75,32 @@ public class Main {
     public static void menuInicial(){
         Scanner ler = new Scanner(System.in);
         System.out.println("Bem-Vindo ao SisPetro");
-        boolean eUsuarioAdmin;
-        boolean eSenhaAdmin;
+
         Optional<Usuario> optionalUsuario;
         boolean eSenhaCorreta = false;
         do {
             System.out.println("Digite o seu login: ");
             String loginDigitado = ler.nextLine();
+            loginDigitado = loginDigitado.toUpperCase();
             System.out.println("Digite a sua senha numérica: ");
             Integer senhaDigitada = Integer.parseInt(ler.nextLine());
-            optionalUsuario = todosOsUsuarios.stream().filter(usuario -> usuario.getLogin().equals(loginDigitado)).findFirst();
+            String finalLoginDigitado = loginDigitado;
+            optionalUsuario = todosOsUsuarios.stream().filter(usuario -> usuario.getLogin().equals(finalLoginDigitado)).findFirst();
             if(optionalUsuario.isPresent()){
                 eSenhaCorreta = optionalUsuario.get().getSenha().equals(senhaDigitada);
             }
+            if (optionalUsuario.isEmpty() || !eSenhaCorreta){
+                System.out.println("Usuario não encontrado");
+            }
         }while(optionalUsuario.isEmpty() || !eSenhaCorreta);
 
+        switch (optionalUsuario.get().getCargo()){
+            case ADMINISTRADOR -> menuDoUsuarioAdmin(optionalUsuario.get());
+            case GERENTE ->
+        }
+
     }
-    public static void cadastroDeProdutos(Integer proxCodBarrasProduto, ArrayList<Produto> todosOsProdutos){
+    public static void cadastroDeProdutos(){
         Scanner ler = new Scanner(System.in);
         System.out.println("Criação de novo Produto");
         Produto produto = new Produto();
@@ -115,7 +120,7 @@ public class Main {
         todosOsProdutos.add(produto);
     }
 
-    public static void listagemDeProdutos(ArrayList<Produto> todosOsProdutos){
+    public static void listagemDeProdutos(){
         /*for(int x=0; x < todosOsProdutos.size(); x++){
             System.out.print(todosOsProdutos.get(x).getCodigo() + "\t");
             System.out.print(todosOsProdutos.get(x).getDescricao()+ "\t");
@@ -131,9 +136,9 @@ public class Main {
         }
     }
 
-    public static void deletarProduto(ArrayList<Produto> todosOsProdutos){
+    public static void deletarProduto(){
         Scanner ler = new Scanner(System.in);
-        listagemDeProdutos(todosOsProdutos);
+        listagemDeProdutos();
         Boolean removeu;
         do {
             System.out.println("Digite o código do produto que deseja deletar: ");
@@ -145,10 +150,10 @@ public class Main {
         }while (removeu == false);
     }
 
-    public static void editarProduto(ArrayList<Produto> todosOsProdutos){
+    public static void editarProduto(){
         Scanner ler = new Scanner(System.in);
         Optional<Produto> produtoASerEditado;
-        listagemDeProdutos(todosOsProdutos);
+        listagemDeProdutos();
         do {
             System.out.println("Digite o código do produto que deseja editar: ");
             Integer codProdutoAEditar = Integer.parseInt(ler.nextLine());
@@ -169,9 +174,9 @@ public class Main {
         produtoASerEditado.get().setEstoque(Integer.parseInt(ler.nextLine()));
     }
 
-    public static void incrementoNoEstoqueDeProduto(ArrayList<Produto> todosOsProdutos){
+    public static void incrementoNoEstoqueDeProduto(){
         Scanner ler = new Scanner(System.in);
-        listagemDeProdutos(todosOsProdutos);
+        listagemDeProdutos();
         Optional<Produto> produtoASerIncrementado;
         do{
             System.out.println("Digite o código do produto a ser incrementado: ");
@@ -189,7 +194,7 @@ public class Main {
         //produtoASerIncrementado.get().setEstoque(novoEstoque);
     }
 
-    public static void cadastroDeCombustiveis(Integer proxCodBarrasCombustivel, ArrayList<Combustivel> todosOsCombustiveis){
+    public static void cadastroDeCombustiveis(){
         Scanner ler = new Scanner(System.in);
         System.out.println("Criação de novo Combustivel");
         Combustivel combustivel = new Combustivel();
@@ -237,7 +242,7 @@ public class Main {
         todosOsCombustiveis.add(combustivel);
     }
 
-    public static void listagemDeCombustiveis(ArrayList<Combustivel> todosOsCombustiveis){
+    public static void listagemDeCombustiveis(){
         for(Combustivel c : todosOsCombustiveis){
             System.out.print(c.getCodigo() + "\t");
             System.out.print(c.getTipo() + "\t");
@@ -252,9 +257,9 @@ public class Main {
         }
     }
 
-    public static void deletarCombustivel(ArrayList<Combustivel> todosOsCombustiveis) {
+    public static void deletarCombustivel() {
         Scanner ler = new Scanner(System.in);
-        listagemDeCombustiveis(todosOsCombustiveis);
+        listagemDeCombustiveis();
         Boolean removeu;
         do {
             System.out.println("Digite o códido do combustivel a ser deletado: ");
@@ -266,9 +271,9 @@ public class Main {
         } while (removeu == false);
     }
 
-    public static void editarPrecoCombustivel(ArrayList<Combustivel> todosOsCombustiveis) {
+    public static void editarPrecoCombustivel() {
         Scanner ler = new Scanner(System.in);
-        listagemDeCombustiveis(todosOsCombustiveis);
+        listagemDeCombustiveis();
         Optional<Combustivel> combustivelASerEditado;
         do {
             System.out.println("Digite o código do combustivel a ser editado: ");
@@ -286,9 +291,9 @@ public class Main {
         combustivelASerEditado.get().addHistoricoDePrecos(novoHistorico);
     }
 
-    public static void editarEstoqueCombustivel(ArrayList<Combustivel> todosOsCombustiveis){
+    public static void editarEstoqueCombustivel(){
         Scanner ler = new Scanner(System.in);
-        listagemDeCombustiveis(todosOsCombustiveis);
+        listagemDeCombustiveis();
         Optional<Combustivel> combustivelASerEditado;
         do{
             System.out.println("Digite o código do combustivel a ser editado: ");
@@ -303,9 +308,9 @@ public class Main {
         combustivelASerEditado.get().setLitragemEmEstoque(Double.parseDouble(gambiarra));
     }
 
-    public static void incrementoNoEstoqueDeCombustivel(ArrayList<Combustivel> todosOsCombustiveis){
+    public static void incrementoNoEstoqueDeCombustivel(){
         Scanner ler = new Scanner(System.in);
-        listagemDeCombustiveis(todosOsCombustiveis);
+        listagemDeCombustiveis();
         Optional<Combustivel> combustivelAIncrementar;
         do {
             System.out.println("Digite o código do combustivel a ser incrementado");
@@ -321,12 +326,10 @@ public class Main {
         combustivelAIncrementar.get().incrementoEstoque(valorASerIncrementado);
     }
 
-    public static void cadastroDeUsuario(Integer proxCodDeUsuario, ArrayList<Usuario> todosOsUsuarios){
+    public static void cadastroDeUsuario(){
         Scanner ler = new Scanner(System.in);
         System.out.println("Criação de novo Usuário");
-        Usuario usuario = new Usuario();
-        usuario.setCodigo(proxCodDeUsuario);
-        Cargo gambiarra = null;
+        Cargo cargoSelecionado = null;
         boolean excecao;
 
         System.out.println("Segue os cargos elegiveis para cadastro: ");
@@ -338,27 +341,27 @@ public class Main {
             String cargoDigitado = ler.nextLine();
             cargoDigitado = cargoDigitado.toUpperCase();
             try {
-                gambiarra = Cargo.valueOf(cargoDigitado);
+                cargoSelecionado = Cargo.valueOf(cargoDigitado);
             } catch (Exception exception) {
                 excecao = true;
                 System.out.println("Opção inválida");
             }
         }while (excecao);
-        usuario.setCargo(gambiarra);
-        
+
         System.out.println("Digite o nome do funcionario: ");
-        usuario.setNome(ler.nextLine());
+        String nomeDigitado = ler.nextLine();
 
         System.out.println("Crie um login para o funcionario: ");
-        usuario.setNome(ler.nextLine());
+        String loginDigitado = ler.nextLine();
 
         System.out.println("Crie uma senha para o funcionario: ");
-        usuario.setNome(ler.nextLine());
+        Integer senhaDigitada = Integer.parseInt(ler.nextLine());
 
+        Usuario usuario = new Usuario(proxCodDeUsuario,nomeDigitado,cargoSelecionado,loginDigitado,senhaDigitada);
         todosOsUsuarios.add(usuario);
     }
 
-    public static void listagemDeUsuarios(ArrayList<Usuario> todosOsUsuarios){
+    public static void listagemDeUsuarios(){
         for(Usuario u : todosOsUsuarios) {
             System.out.print(u.getCodigo() + "\t");
             System.out.print(u.getNome() + "\t");
@@ -366,9 +369,9 @@ public class Main {
         }
     }
 
-    public static void editarCargoDeUsuario(ArrayList<Usuario> todosOsUsuarios){
+    public static void editarCargoDeUsuario(){
         Scanner ler = new Scanner((System.in));
-        listagemDeUsuarios(todosOsUsuarios);
+        listagemDeUsuarios();
         Optional<Usuario> usuarioASerEditado;
         Cargo gambiarra = null;
         boolean excecao;
@@ -402,4 +405,15 @@ public class Main {
         usuarioASerEditado.get().setCargo(gambiarra);
     }
 
+    public static void menuDoUsuarioAdmin(Usuario usuario){
+        Integer opcao = 0;
+        System.out.println("Bem-vindo " + usuario.getNome());
+        System.out.println("1 - Cadastrar Gerente");
+        System.out.println("2 - Sair");
+        switch (opcao){
+            case 1 -> cadastroDeUsuario();
+            case 2 -> menuInicial();
+
+        }
+    }
 }

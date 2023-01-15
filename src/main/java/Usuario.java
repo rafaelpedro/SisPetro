@@ -11,11 +11,12 @@ public class Usuario {
     private Integer senha;
 
     //construtor
+    public Usuario () {}
     public Usuario (Integer codigo, String nome, Cargo cargo, String login, Integer senha){
         this.codigo = codigo;
         this.nome = nome;
         this.cargo = cargo;
-        this.login = login;
+        this.login = login.toUpperCase();
         this.senha = senha;
     }
     public void setCodigo(Integer codigo){

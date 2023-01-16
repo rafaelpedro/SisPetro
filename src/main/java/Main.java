@@ -31,7 +31,6 @@ public class Main {
             }
         }while (true);
 
-
         /*
         while(opcao != SAIR) {
             System.out.println("Selecione uma opção: ");

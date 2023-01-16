@@ -31,57 +31,6 @@ public class Main {
             }
         }while (true);
 
-        /*
-        while(opcao != SAIR) {
-            System.out.println("Selecione uma opção: ");
-            System.out.println("1- Cadastrar produto");
-            System.out.println("2- Listar produtos");
-            System.out.println("3- Deletar produto");
-            System.out.println("4- Editar produto");
-            System.out.println("5- Incrementar estoque do produto");
-            System.out.println("6- Cadastrar combustivel");
-            System.out.println("7- Listar combustiveis");
-            System.out.println("8- Deletar combustivel");
-            System.out.println("9- Editar preço do combustivel");
-            System.out.println("10- Editar estoque do combustivel");
-            System.out.println("11- Incrementar estoque de combustivel");
-            System.out.println("12- Cadastro de usuário");
-            System.out.println("13- Listar usuários");
-            System.out.println("14- Editar cargo de usuario");
-
-            System.out.println("15- Sair");
-            opcao = Integer.parseInt(ler.nextLine());
-            switch (opcao) {
-                case 1 -> {
-                    cadastroDeProdutos();
-                    proxCodBarrasProduto += 1;
-                }
-                case 2 -> listagemDeProdutos();
-                case 3 -> deletarProduto();
-                case 4 -> editarProduto();
-                case 5 -> incrementoNoEstoqueDeProduto();
-                case 6 -> {
-                    cadastroDeCombustiveis();
-                    proxCodBarrasCombustivel +=1;
-                }
-                case 7 -> listagemDeCombustiveis();
-                case 8 -> deletarCombustivel();
-                case 9 -> editarPrecoCombustivel();
-                case 10 -> editarEstoqueCombustivel();
-                case 11 -> incrementoNoEstoqueDeCombustivel();
-                case 12 -> {
-                    cadastroDeUsuario();
-                    proxCodDeUsuario += 1;
-                }
-                case 13 -> listagemDeUsuarios();
-                case 14 -> editarCargoDeUsuario();
-
-
-                case 15 -> System.out.println("Obrigado por utilizar o SisPetro");
-                default -> System.out.println("Opção invalida");
-
-            }
-        } */
     }
 
 
@@ -197,9 +146,7 @@ public class Main {
         System.out.println("Digite o valor a ser incrementado: ");
         Integer valorAIncrementar = Integer.parseInt(ler.nextLine());
         produtoASerIncrementado.get().incrementoEstoque(valorAIncrementar);
-        //Integer valorEmEstoque = produtoASerIncrementado.get().getEstoque();
-        //Integer novoEstoque = valorEmEstoque + valorAIncrementar;
-        //produtoASerIncrementado.get().setEstoque(novoEstoque);
+
     }
 
     public static void cadastroDeCombustiveis() {
@@ -208,7 +155,6 @@ public class Main {
         Combustivel combustivel = new Combustivel();
         combustivel.setCodigo(proxCodBarrasCombustivel);
 
-        // Aqui tem que fazer algo para só poder selecionar os combustiveis setados
         System.out.println("Segue os tipos de combustiveis validos para cadastro:");
         Stream.of(TipoDeCombustivel.values()).forEach(System.out::println);
         Optional<Combustivel> combustivelASerComparado = null;
@@ -234,10 +180,6 @@ public class Main {
         } while (excecao || combustivelASerComparado.isPresent());
 
         combustivel.setTipo(gambiarra);
-        //TipoDeCombustivel[] todosOsTiposDeCombustiveis = TipoDeCombustivel.values();
-        //List<TipoDeCombustivel> listaDoTipoDeCombustivel = Arrays.asList(todosOsTiposDeCombustiveis);
-        //System.out.println(tipoDigitado + "existe na lista como:" + (listaDoTipoDeCombustivel.contains(tip
-
         System.out.println("Digite o preço do combustivel: ");
         String gambiarra1 = ler.nextLine();
         combustivel.setPreco(Double.parseDouble(gambiarra1));
@@ -366,6 +308,7 @@ public class Main {
         Integer senhaDigitada = Integer.parseInt(ler.nextLine());
 
         Usuario usuario = new Usuario(proxCodDeUsuario, nomeDigitado, cargoSelecionado, loginDigitado, senhaDigitada);
+        proxCodDeUsuario += 1;
         todosOsUsuarios.add(usuario);
 
 
@@ -421,14 +364,14 @@ public class Main {
         do {
             System.out.println("Bem-vindo " + usuario.getNome());
             System.out.println("1 - Cadastro de Usuários");
-            System.out.println("2 - Sair");
+            System.out.println("2 - Editar Usuário");
+            System.out.println("3 - Sair");
             System.out.println();
             System.out.println("Digite a opção desejada: ");
             opcao = Integer.parseInt(ler.nextLine());
             switch (opcao) {
-                case 1 -> {
-                    cadastroDeUsuario();
-                }
+                case 1 -> cadastroDeUsuario();
+                case 2 -> editarCargoDeUsuario();
             }
         } while (opcao != 2);
     }
@@ -438,11 +381,18 @@ public class Main {
         Integer opcao = 0;
         do {
             System.out.println("Bem-vindo " + usuario.getNome());
-            System.out.println("1 - Cadastro de Usuários");
-            System.out.println("2 - Cadastro de Produtos");
-            System.out.println("3 - Cadastro de Combustiveis");
+            System.out.println("1 - Cadastro de usuários");
+            System.out.println("2 - Cadastro de produtos");
+            System.out.println("3 - Cadastro de combustiveis");
+            System.out.println("4 - Editar produto");
+            System.out.println("5 - Editar preço do combustível");
+            System.out.println("6 - Editar estoque combustível");
+            System.out.println("7 - Editar cargo do usuário");
+            System.out.println("8 - Listar usuarios");
+            System.out.println("9 - Listar produtos");
+            System.out.println("10 - Listar litragem de combustíveis");
             //System.out.println("4 - Gerar Relatórios");
-            System.out.println("4 - Sair");
+            System.out.println("11 - Sair");
             System.out.println();
             System.out.println("Digite a opção desejada: ");
             opcao = Integer.parseInt(ler.nextLine());
@@ -450,9 +400,16 @@ public class Main {
                 case 1 -> cadastroDeUsuario();
                 case 2 -> cadastroDeProdutos();
                 case 3 -> cadastroDeCombustiveis();
-                //case 4 -> geradorDeRelatorios();
+                case 4 -> editarProduto();
+                case 5 -> editarPrecoCombustivel();
+                case 6 -> editarEstoqueCombustivel();
+                case 7 -> editarCargoDeUsuario();
+                case 8 -> listagemDeUsuarios();
+                case 9 -> listagemDeProdutos();
+                case 10 -> listagemDeCombustiveis();
+                //case 8 -> geradorDeRelatorios();
             }
-        } while (opcao != 4);
+        } while (opcao != 11);
     }
 
     public static void menuDoUsuarioAtendente(Usuario usuario) {
@@ -460,13 +417,15 @@ public class Main {
         Integer opcao = 0;
         do {
             System.out.println("Bem-vindo " + usuario.getNome());
-            System.out.println("1 - Venda de Produtos");
-            System.out.println("2 - Sair");
+            System.out.println("1 - Venda de produtos");
+            System.out.println("2 - Listagem de produtos");
+            System.out.println("3 - Sair");
             System.out.println();
             System.out.println("Digite a opção desejada: ");
             opcao = Integer.parseInt(ler.nextLine());
             switch (opcao) {
                 case 1 -> System.out.println("Venda de Produtos");
+                case 2 -> listagemDeProdutos();
             }
         } while (opcao != 2);
     }
@@ -476,13 +435,15 @@ public class Main {
         Integer opcao = 0;
         do {
             System.out.println("Bem-vindo " + usuario.getNome());
-            System.out.println("1 - Venda de Combustivél");
-            System.out.println("2 - Sair");
+            System.out.println("1 - Venda de combustivél");
+            System.out.println("2 - Listagem de combustível");
+            System.out.println("3 - Sair");
             System.out.println();
             System.out.println("Digite a opção desejada: ");
             opcao = Integer.parseInt(ler.nextLine());
             switch (opcao) {
                 case 1 -> System.out.println("Venda de Combustivél");
+                case 2 -> listagemDeCombustiveis();
             }
         } while (opcao != 2);
     }

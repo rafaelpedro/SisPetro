@@ -32,57 +32,6 @@ public class Main {
         }while (true);
 
 
-        /*
-        while(opcao != SAIR) {
-            System.out.println("Selecione uma opção: ");
-            System.out.println("1- Cadastrar produto");
-            System.out.println("2- Listar produtos");
-            System.out.println("3- Deletar produto");
-            System.out.println("4- Editar produto");
-            System.out.println("5- Incrementar estoque do produto");
-            System.out.println("6- Cadastrar combustivel");
-            System.out.println("7- Listar combustiveis");
-            System.out.println("8- Deletar combustivel");
-            System.out.println("9- Editar preço do combustivel");
-            System.out.println("10- Editar estoque do combustivel");
-            System.out.println("11- Incrementar estoque de combustivel");
-            System.out.println("12- Cadastro de usuário");
-            System.out.println("13- Listar usuários");
-            System.out.println("14- Editar cargo de usuario");
-
-            System.out.println("15- Sair");
-            opcao = Integer.parseInt(ler.nextLine());
-            switch (opcao) {
-                case 1 -> {
-                    cadastroDeProdutos();
-                    proxCodBarrasProduto += 1;
-                }
-                case 2 -> listagemDeProdutos();
-                case 3 -> deletarProduto();
-                case 4 -> editarProduto();
-                case 5 -> incrementoNoEstoqueDeProduto();
-                case 6 -> {
-                    cadastroDeCombustiveis();
-                    proxCodBarrasCombustivel +=1;
-                }
-                case 7 -> listagemDeCombustiveis();
-                case 8 -> deletarCombustivel();
-                case 9 -> editarPrecoCombustivel();
-                case 10 -> editarEstoqueCombustivel();
-                case 11 -> incrementoNoEstoqueDeCombustivel();
-                case 12 -> {
-                    cadastroDeUsuario();
-                    proxCodDeUsuario += 1;
-                }
-                case 13 -> listagemDeUsuarios();
-                case 14 -> editarCargoDeUsuario();
-
-
-                case 15 -> System.out.println("Obrigado por utilizar o SisPetro");
-                default -> System.out.println("Opção invalida");
-
-            }
-        } */
     }
 
 

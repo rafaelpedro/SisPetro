@@ -1,4 +1,5 @@
-import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -7,14 +8,16 @@ public class Main {
     public static final Integer SAIR = 15;
     public static final String ADMIN_LOGIN = "ADMIN";
     public static final Integer ADMIN_SENHA = 123456;
+
+    public static ArrayList<Operacao> todasAsOperacoes = new ArrayList<>();
     public static ArrayList<Produto> todosOsProdutos = new ArrayList<>();
     public static ArrayList<Combustivel> todosOsCombustiveis = new ArrayList<>();
     public static ArrayList<Usuario> todosOsUsuarios = new ArrayList<>();
+    public static ArrayList<Venda> todosAsVendas = new ArrayList<>();
     public static Integer proxCodBarrasProduto = 1;
     public static Integer proxCodBarrasCombustivel = 1;
     public static Integer proxCodDeUsuario = 1;
-
-
+    public static Usuario usuarioLogado;
     public static void main(String[] args) {
         Scanner ler = new Scanner(System.in);
         Integer opcao = 1;
@@ -22,7 +25,7 @@ public class Main {
         todosOsUsuarios.add(usuarioAdmin);
         Integer menu = 1;
         do {
-            Usuario usuarioLogado = menuLogin();
+            usuarioLogado = menuLogin();
             switch (usuarioLogado.getCargo()) {
                 case ADMINISTRADOR -> menuDoUsuarioAdmin(usuarioLogado);
                 case GERENTE -> menuDoUsuarioGerente(usuarioLogado);
@@ -32,7 +35,6 @@ public class Main {
         }while (true);
 
     }
-
 
     public static Usuario menuLogin() {
         Scanner ler = new Scanner(System.in);
@@ -61,6 +63,7 @@ public class Main {
         Scanner ler = new Scanner(System.in);
         System.out.println("Criação de novo Produto");
         Produto produto = new Produto();
+        Operacao operacao = new Operacao();
         produto.setCodigo(proxCodBarrasProduto);
 
         System.out.println("Digite a descrição do Produto: ");
@@ -74,7 +77,12 @@ public class Main {
         produto.setEstoque(Integer.parseInt(ler.nextLine()));
         //produto.baixaEstoque(1);
 
+        operacao.setOperacaoRealizda("Cadastro de Produto");
+        operacao.setUsuarioResponsavel(usuarioLogado);
+        operacao.setDataDeAlteracao(LocalDate.now());
+
         todosOsProdutos.add(produto);
+        todasAsOperacoes.add(operacao);
     }
 
     public static void listagemDeProdutos() {
@@ -96,6 +104,7 @@ public class Main {
     public static void deletarProduto() {
         Scanner ler = new Scanner(System.in);
         listagemDeProdutos();
+        Operacao operacao = new Operacao();
         Boolean removeu;
         do {
             System.out.println("Digite o código do produto que deseja deletar: ");
@@ -105,6 +114,11 @@ public class Main {
                 System.out.println("Código Inválido");
             }
         } while (removeu == false);
+
+        operacao.setOperacaoRealizda("Deleção de Produto");
+        operacao.setUsuarioResponsavel(usuarioLogado);
+        operacao.setDataDeAlteracao(LocalDate.now());
+        todasAsOperacoes.add(operacao);
     }
 
     public static void editarProduto() {
@@ -129,6 +143,12 @@ public class Main {
 
         System.out.println("Digite a quantidade a ser cadastrada no estoque: ");
         produtoASerEditado.get().setEstoque(Integer.parseInt(ler.nextLine()));
+
+        Operacao operacao = new Operacao();
+        operacao.setOperacaoRealizda("Edição de produto");
+        operacao.setUsuarioResponsavel(usuarioLogado);
+        operacao.setDataDeAlteracao(LocalDate.now());
+        todasAsOperacoes.add(operacao);
     }
 
     public static void incrementoNoEstoqueDeProduto() {
@@ -146,7 +166,11 @@ public class Main {
         System.out.println("Digite o valor a ser incrementado: ");
         Integer valorAIncrementar = Integer.parseInt(ler.nextLine());
         produtoASerIncrementado.get().incrementoEstoque(valorAIncrementar);
-
+        Operacao operacao = new Operacao();
+        operacao.setOperacaoRealizda("Incremento no estoque de produto");
+        operacao.setUsuarioResponsavel(usuarioLogado);
+        operacao.setDataDeAlteracao(LocalDate.now());
+        todasAsOperacoes.add(operacao);
     }
 
     public static void cadastroDeCombustiveis() {
@@ -190,6 +214,11 @@ public class Main {
         //combustivel.baixaLitragemEmEstoque(1);
 
         todosOsCombustiveis.add(combustivel);
+        Operacao operacao = new Operacao();
+        operacao.setOperacaoRealizda("Cadastro de combustivel");
+        operacao.setUsuarioResponsavel(usuarioLogado);
+        operacao.setDataDeAlteracao(LocalDate.now());
+        todasAsOperacoes.add(operacao);
     }
 
     public static void listagemDeCombustiveis() {
@@ -219,6 +248,12 @@ public class Main {
                 System.out.println("Código Inválido");
             }
         } while (removeu == false);
+
+        Operacao operacao = new Operacao();
+        operacao.setOperacaoRealizda("Deleção de combustivel");
+        operacao.setUsuarioResponsavel(usuarioLogado);
+        operacao.setDataDeAlteracao(LocalDate.now());
+        todasAsOperacoes.add(operacao);
     }
 
     public static void editarPrecoCombustivel() {
@@ -239,6 +274,12 @@ public class Main {
         HistoricoDePreco novoHistorico = combustivelASerEditado.get().criaHistoricoDePreco(novoPreco);
         combustivelASerEditado.get().setPreco(novoPreco);
         combustivelASerEditado.get().addHistoricoDePrecos(novoHistorico);
+
+        Operacao operacao = new Operacao();
+        operacao.setOperacaoRealizda("Edição de preço do combustivel");
+        operacao.setUsuarioResponsavel(usuarioLogado);
+        operacao.setDataDeAlteracao(LocalDate.now());
+        todasAsOperacoes.add(operacao);
     }
 
     public static void editarEstoqueCombustivel() {
@@ -256,6 +297,12 @@ public class Main {
         System.out.println("Digite a nova litragem em estoque: ");
         String gambiarra = ler.nextLine();
         combustivelASerEditado.get().setLitragemEmEstoque(Double.parseDouble(gambiarra));
+
+        Operacao operacao = new Operacao();
+        operacao.setOperacaoRealizda("Edição do estoque de combustivel");
+        operacao.setUsuarioResponsavel(usuarioLogado);
+        operacao.setDataDeAlteracao(LocalDate.now());
+        todasAsOperacoes.add(operacao);
     }
 
     public static void incrementoNoEstoqueDeCombustivel() {
@@ -274,6 +321,12 @@ public class Main {
         String gambiarra = ler.nextLine();
         Double valorASerIncrementado = Double.parseDouble(gambiarra);
         combustivelAIncrementar.get().incrementoEstoque(valorASerIncrementado);
+
+        Operacao operacao = new Operacao();
+        operacao.setOperacaoRealizda("Incremento no estoque de combustivel");
+        operacao.setUsuarioResponsavel(usuarioLogado);
+        operacao.setDataDeAlteracao(LocalDate.now());
+        todasAsOperacoes.add(operacao);
     }
 
     public static void cadastroDeUsuario() {
@@ -311,7 +364,11 @@ public class Main {
         proxCodDeUsuario += 1;
         todosOsUsuarios.add(usuario);
 
-
+        Operacao operacao = new Operacao();
+        operacao.setOperacaoRealizda("Cadastro de usuario");
+        operacao.setUsuarioResponsavel(usuarioLogado);
+        operacao.setDataDeAlteracao(LocalDate.now());
+        todasAsOperacoes.add(operacao);
     }
 
     public static void listagemDeUsuarios() {
@@ -356,6 +413,12 @@ public class Main {
         } while (excecao);
         // Cargo novoCargo = gambiarra;
         usuarioASerEditado.get().setCargo(gambiarra);
+
+        Operacao operacao = new Operacao();
+        operacao.setOperacaoRealizda("Edição no cargo do usuario");
+        operacao.setUsuarioResponsavel(usuarioLogado);
+        operacao.setDataDeAlteracao(LocalDate.now());
+        todasAsOperacoes.add(operacao);
     }
 
     public static void menuDoUsuarioAdmin(Usuario usuario) {
@@ -391,8 +454,13 @@ public class Main {
             System.out.println("8 - Listar usuarios");
             System.out.println("9 - Listar produtos");
             System.out.println("10 - Listar litragem de combustíveis");
+            System.out.println("11 - Deletar produto");
+            System.out.println("12 - Deletar combustível");
+            System.out.println("13 - Incrementar estoque de produtos");
+            System.out.println("14 - Incrementar litragem de combustíveis");
+            System.out.println("15 - Relatório de operações");
             //System.out.println("4 - Gerar Relatórios");
-            System.out.println("11 - Sair");
+            System.out.println("16 - Sair");
             System.out.println();
             System.out.println("Digite a opção desejada: ");
             opcao = Integer.parseInt(ler.nextLine());
@@ -407,9 +475,14 @@ public class Main {
                 case 8 -> listagemDeUsuarios();
                 case 9 -> listagemDeProdutos();
                 case 10 -> listagemDeCombustiveis();
+                case 11 -> deletarProduto();
+                case 12 -> deletarCombustivel();
+                case 13 -> incrementoNoEstoqueDeProduto();
+                case 14 -> incrementoNoEstoqueDeCombustivel();
+                case 15 -> relatorioDeOperacoes();
                 //case 8 -> geradorDeRelatorios();
             }
-        } while (opcao != 11);
+        } while (opcao != 16);
     }
 
     public static void menuDoUsuarioAtendente(Usuario usuario) {
@@ -446,5 +519,47 @@ public class Main {
                 case 2 -> listagemDeCombustiveis();
             }
         } while (opcao != 2);
+    }
+
+    public static void relatorioDeOperacoes(){
+        for(Operacao operacao : todasAsOperacoes){
+            System.out.println("Operação realizada: " + operacao.getOperacaoRealizda());
+            System.out.println("Data da operação: " + operacao.getDataDeAlteracao());
+            System.out.println("Código do usuário responsável: " + operacao.getUsuarioResponsavel().getCodigo());
+            System.out.println("Nome do usuário responsável: " + operacao.getUsuarioResponsavel().getNome());
+            System.out.println("Cargo do usuário responsável: " + operacao.getUsuarioResponsavel().getCargo());
+        }
+    }
+
+    public static void vendaDeProdutos(){
+        Venda venda = new Venda();
+        Scanner ler = new Scanner(System.in);
+        Optional<Produto> produtoASerVendido;
+        Integer quantidadeVendida;
+        Integer finalizarVenda = 0;
+
+        do {
+            listagemDeProdutos();
+            do {
+                System.out.println("Digite o código do produto a ser vendido: ");
+                Integer codProdutoASerVendido = Integer.parseInt(ler.nextLine());
+                produtoASerVendido = todosOsProdutos.stream().filter(produto -> produto.getCodigo() == codProdutoASerVendido).findFirst();
+                if (produtoASerVendido.isEmpty()) {
+                    System.out.println("Código Inválido");
+                }
+            } while (produtoASerVendido.isEmpty());
+
+            System.out.println("Digite a quantidade a ser vendida: ");
+            quantidadeVendida = Integer.parseInt(ler.nextLine());
+            produtoASerVendido.get().baixaEstoque(quantidadeVendida);
+
+
+            venda.adicionaProduto(produtoASerVendido.get());
+            venda.setValorTotalVendido(quantidadeVendida * produtoASerVendido.get().getPreco());
+        }while(finalizarVenda != 1);
+
+        venda.setHorarioDaVenda(LocalDateTime.now());
+        venda.setUsuarioResponsavel(usuarioLogado);
+        todosAsVendas.add(venda);
     }
 }

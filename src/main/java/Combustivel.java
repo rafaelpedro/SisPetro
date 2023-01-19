@@ -9,6 +9,7 @@ public class Combustivel {
 
     private ArrayList<HistoricoDePreco> historicoDePrecos = new ArrayList<>();
 
+
     public  void addHistoricoDePrecos(HistoricoDePreco novoHistorico){
         historicoDePrecos.add(novoHistorico);
     }

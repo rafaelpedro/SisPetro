@@ -5,7 +5,6 @@ import java.util.stream.Stream;
 
 public class Main {
 
-    public static final Integer SAIR = 15;
     public static final String ADMIN_LOGIN = "ADMIN";
     public static final Integer ADMIN_SENHA = 123456;
 
@@ -14,10 +13,13 @@ public class Main {
     public static ArrayList<Combustivel> todosOsCombustiveis = new ArrayList<>();
     public static ArrayList<Usuario> todosOsUsuarios = new ArrayList<>();
     public static ArrayList<Venda> todosAsVendas = new ArrayList<>();
+
+    public static final Integer SAIR = 15;
     public static Integer proxCodBarrasProduto = 1;
     public static Integer proxCodBarrasCombustivel = 1;
     public static Integer proxCodDeUsuario = 1;
     public static Usuario usuarioLogado;
+
     public static void main(String[] args) {
         Scanner ler = new Scanner(System.in);
         Integer opcao = 1;
@@ -436,7 +438,7 @@ public class Main {
                 case 1 -> cadastroDeUsuario();
                 case 2 -> editarCargoDeUsuario();
             }
-        } while (opcao != 2);
+        } while (opcao != 3);
     }
 
     public static void menuDoUsuarioGerente(Usuario usuario) {
@@ -497,7 +499,7 @@ public class Main {
             System.out.println("Digite a opção desejada: ");
             opcao = Integer.parseInt(ler.nextLine());
             switch (opcao) {
-                case 1 -> System.out.println("Venda de Produtos");
+                case 1 -> vendaDeProdutos();
                 case 2 -> listagemDeProdutos();
             }
         } while (opcao != 2);
